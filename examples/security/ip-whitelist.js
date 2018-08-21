@@ -7,7 +7,16 @@ addEventListener('fetch', event => {
 })
 
 async function fetchAndApply(request) {  
-  if (request.headers.get('cf-connecting-ip') === '225.0.0.1') {
+  let clientIp = request.headers.get('cf-connecting-ip')
+  let whitelistedIP = new Set(
+    [
+      '225.0.0.1',
+      '225.0.0.2'
+    ]);
+  
+  
+  if (!whitelistedIP.has(clientIp)) {
+    
     return new Response('Sorry, this page is not available.',
         { status: 403, statusText: 'Forbidden' })
   }
